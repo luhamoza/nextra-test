@@ -62,14 +62,6 @@ const config: DocsThemeConfig = {
       },
     };
   },
-  // Add a head component to override default tags
-  head: (
-    <>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      {/* This empty og:title will be overwritten by the one set in useNextSeoProps */}
-      <meta property="og:title" content="" />
-    </>
-  ),
 };
 
 export default config;
