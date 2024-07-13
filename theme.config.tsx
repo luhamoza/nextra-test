@@ -16,16 +16,19 @@ const config: DocsThemeConfig = {
   },
   useNextSeoProps() {
     const { asPath } = useRouter();
+    // Remove query parameters and hash from the path
     const cleanPath = asPath.split(/[?#]/)[0];
 
+    // Default title for all pages
     let pageTitle = "My Project Documentation";
-    let fullTitle = pageTitle;
 
+    // Set specific titles for certain pages
     if (cleanPath === "/another") {
       pageTitle = "Another Page";
     } else if (cleanPath === "/advanced") {
       pageTitle = "Advanced";
     } else if (cleanPath !== "/" && cleanPath.length > 1) {
+      // For other pages, generate a title based on the URL
       pageTitle =
         cleanPath
           .split("/")
@@ -35,13 +38,13 @@ const config: DocsThemeConfig = {
           .join(" ") || "My Project Documentation";
     }
 
-    if (cleanPath !== "/") {
-      fullTitle = `${pageTitle} - My Project Documentation`;
-    }
+    // For the index page, use pageTitle as is. For other pages, append the project name
+    const fullTitle =
+      cleanPath === "/" ? pageTitle : `${pageTitle} - My Project Documentation`;
 
     return {
-      title: pageTitle,
-      titleTemplate: "%s - My Project Documentation",
+      // Use fullTitle for both the browser tab and og:title
+      title: fullTitle,
       description:
         "This is a sample project to demonstrate Nextra's capabilities",
       openGraph: {
@@ -59,6 +62,14 @@ const config: DocsThemeConfig = {
       },
     };
   },
+  // Add a head component to override default tags
+  head: (
+    <>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      {/* This empty og:title will be overwritten by the one set in useNextSeoProps */}
+      <meta property="og:title" content="" />
+    </>
+  ),
 };
 
 export default config;
